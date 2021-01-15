@@ -1,27 +1,23 @@
-extern crate minifb;
-
 use minifb::{Key, Window, WindowOptions};
-use bytes::{BytesMut, BufMut};
+// use bytes::{BytesMut, BufMut};
 
-let mut memory = BytesMut::with_capacity(4096);
 fn main() {
     const WIDTH: usize = 640;
     const HEIGHT: usize = 360;
     window(WIDTH, HEIGHT);
+    let memory: &mut [u8];
 }
 
-fn window(WIDTH: usize, HEIGHT: usize) {
-    let mut buffer: Vec<u32> = vec![0; WIDTH * HEIGHT];
+fn window(width: usize, height: usize) {
+    let mut buffer: Vec<u32> = vec![0; width * height];
 
     let mut window = Window::new(
         "Test - ESC to exit",
-        WIDTH,
-        HEIGHT,
+        width,
+        height,
         WindowOptions::default(),
     )
-    .unwrap_or_else(|e| {
-        panic!("{}", e);
-    });
+    .unwrap();
 
     // Limit to max ~60 fps update rate
     window.limit_update_rate(Some(std::time::Duration::from_micros(16600)));
@@ -32,6 +28,6 @@ fn window(WIDTH: usize, HEIGHT: usize) {
         }
 
         // We unwrap here as we want this code to exit if it fails. Real applications may want to handle this in a different way
-        window.update_with_buffer(&buffer, WIDTH, HEIGHT).unwrap();
+        window.update_with_buffer(&buffer, width, height).unwrap();
     }
 }
